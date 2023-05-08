@@ -5,6 +5,9 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR....
+      - echo Installing source NPM dependencies...
+      - npm install
+      - npm run app.js
       - aws --version
       - aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 496746411336.dkr.ecr.eu-north-1.amazonaws.com
       - REPOSITORY_URI=496746411336.dkr.ecr.eu-north-1.amazonaws.com/nodejs-app
@@ -12,7 +15,6 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - echo Installing source NPM dependencies...
       - echo Building the Docker image...
       - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
   post_build:
